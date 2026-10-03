@@ -64,13 +64,13 @@
 
   function productCard(p) {
     const price = Math.round(p.basePrice * (1 - (p.discountPercent||0)/100));
-    const img = p.images && p.images[0] ? `${API_ORIGIN}${p.images[0]}` : "https://placehold.co/400x520/6e1e32/e8c874?text=Nandini+Unique";
+    const img = safeImageUrl(p.images && p.images[0], "https://placehold.co/400x520/6e1e32/e8c874?text=Nandini+Unique");
     return `
       <div class="product-card">
         <a href="product.html?id=${p._id}" class="card-link">
           <div class="thumb">
             ${p.discountPercent ? `<span class="discount-flag">${p.discountPercent}% OFF</span>` : ""}
-            <img src="${img}" alt="${p.name}" loading="lazy" />
+            <img src="${img}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/400x520/6e1e32/e8c874?text=Nandini+Unique';" />
           </div>
           <div class="body">
             <span class="cat">${p.productType || ""}${p.category ? " · " + p.category : ""}</span>

@@ -203,8 +203,15 @@ function ensureQuickOrderModal() {
   div.addEventListener("click", (e) => { if (e.target === div) div.classList.remove("open"); });
 }
 
+function safeImageUrl(url, fallback = "https://placehold.co/400x520/6e1e32/e8c874?text=Nandini+Unique") {
+  if (!url) return fallback;
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${API_ORIGIN}${url.startsWith("/") ? url : `/${url}`}`;
+}
+
 function productImg(p) {
-  return p.images && p.images[0] ? `${API_ORIGIN}${p.images[0]}` : "https://placehold.co/300x380/6e1e32/e8c874?text=Nandini+Unique";
+  const img = Array.isArray(p.images) ? p.images[0] : (p.image || "");
+  return safeImageUrl(img, "https://placehold.co/300x380/6e1e32/e8c874?text=Nandini+Unique");
 }
 
 function priceForSize(product, sizeName) {

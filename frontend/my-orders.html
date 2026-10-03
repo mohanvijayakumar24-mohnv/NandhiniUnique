@@ -35,7 +35,11 @@
 
   if (!isLoggedIn()) window.location.href = "login.html?next=my-orders.html";
 
-  function img(path) { return path ? `${API_ORIGIN}${path}` : "https://placehold.co/80x100/6e1e32/e8c874?text=NU"; }
+  function img(path) {
+    if (!path) return "https://placehold.co/80x100/6e1e32/e8c874?text=NU";
+    const url = /^https?:\/\//i.test(path) ? path : `${API_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
+    return url;
+  }
 
   async function load() {
     try {
@@ -57,7 +61,7 @@
             </div>
           </div>
           <div class="row" style="margin-top:12px; overflow-x:auto">
-            ${o.items.map(it => `<img src="${img(it.image)}" class="thumb-sm" title="${it.name}" />`).join("")}
+            ${o.items.map(it => `<img src="${img(it.image)}" class="thumb-sm" title="${it.name}" onerror="this.onerror=null;this.src='https://placehold.co/80x100/6e1e32/e8c874?text=NU';" />`).join("")}
           </div>
           <div class="row between" style="margin-top:12px">
             <b>${money(o.totalAmount)}</b>
@@ -89,7 +93,7 @@
       <h4 style="font-size:.95rem">Items</h4>
       <div class="table-wrap"><table>
         <thead><tr><th></th><th>Item</th><th>Size</th><th>Qty</th><th>Price</th></tr></thead>
-        <tbody>${o.items.map(it => `<tr><td><img src="${img(it.image)}" class="thumb-sm" /></td><td>${it.name}</td><td>${it.size}</td><td>${it.quantity}</td><td>${money(it.price)}</td></tr>`).join("")}</tbody>
+        <tbody>${o.items.map(it => `<tr><td><img src="${img(it.image)}" class="thumb-sm" onerror="this.onerror=null;this.src='https://placehold.co/80x100/6e1e32/e8c874?text=NU';" /></td><td>${it.name}</td><td>${it.size}</td><td>${it.quantity}</td><td>${money(it.price)}</td></tr>`).join("")}</tbody>
       </table></div>
       <div class="row between" style="margin-top:12px">
         <span>Payment (${o.payment.method})</span>

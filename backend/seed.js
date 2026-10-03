@@ -31,7 +31,7 @@ async function seed() {
         name: "Kanjivaram Silk Saree - Royal Maroon",
         description:
           "A handwoven Kanjivaram silk saree in a rich maroon with a temple-style gold zari border. Comes with a matching unstitched blouse piece.",
-        images: [],
+        images: ["https://placehold.co/600x800/7c1d1d/e8c874?text=Kanjivaram+Saree"],
         productType: "Saree",
         category: "Kanjivaram",
         color: "Maroon",
@@ -50,7 +50,7 @@ async function seed() {
         name: "Banarasi Georgette Saree - Emerald Green",
         description:
           "Lightweight Banarasi georgette saree with delicate silver zari motifs, perfect for festive daytime events.",
-        images: [],
+        images: ["https://placehold.co/600x800/0f5132/e8c874?text=Banarasi+Saree"],
         productType: "Saree",
         category: "Banarasi",
         color: "Emerald Green",
@@ -65,7 +65,7 @@ async function seed() {
       {
         name: "Handloom Cotton Saree - Indigo Ikat",
         description: "Breathable handloom cotton saree with traditional ikat weaving, great for daily and office wear.",
-        images: [],
+        images: ["https://placehold.co/600x800/1d4ed8/e8c874?text=Handloom+Cotton"],
         productType: "Saree",
         category: "Cotton",
         color: "Indigo",
@@ -84,7 +84,7 @@ async function seed() {
         name: "Anarkali Party Wear Dress - Dusty Rose",
         description:
           "A flowing floor-length Anarkali dress with light embroidery on the yoke, stitched and ready to wear - no tailoring needed.",
-        images: [],
+        images: ["https://placehold.co/600x800/a44d76/f7e7d7?text=Anarkali+Dress"],
         productType: "Dress",
         category: "Party Wear Dress",
         color: "Dusty Rose",

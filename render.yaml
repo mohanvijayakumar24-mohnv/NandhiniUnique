@@ -16,6 +16,10 @@ services:
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
+    disk:
+      name: nandini-uploads
+      mountPath: /opt/render/project/src/backend/uploads
+      sizeGB: 1
     envVars:
       - key: MONGO_URI
         sync: false

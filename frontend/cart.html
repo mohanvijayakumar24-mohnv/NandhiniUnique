@@ -26,7 +26,10 @@
   renderFooter();
   renderWaFloat();
 
-  function img(path) { return path ? `${API_ORIGIN}${path}` : "https://placehold.co/120x160/6e1e32/e8c874?text=NU"; }
+  function img(path) {
+    if (!path) return "https://placehold.co/120x160/6e1e32/e8c874?text=NU";
+    return /^https?:\/\//i.test(path) ? path : `${API_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
+  }
 
   function render() {
     const cart = getCart();
@@ -42,7 +45,7 @@
           ${cart.map(c => `
             <div class="card row between" data-pid="${c.productId}" data-size="${c.size}">
               <div class="row">
-                <img src="${img(c.image)}" class="thumb-sm" style="width:64px;height:84px" />
+                <img src="${img(c.image)}" class="thumb-sm" style="width:64px;height:84px" onerror="this.onerror=null;this.src='https://placehold.co/120x160/6e1e32/e8c874?text=NU';" />
                 <div>
                   <h4 style="margin:0 0 4px; font-size:1rem">${c.name}</h4>
                   <p class="meta muted" style="margin:0">Size: ${c.size}</p>

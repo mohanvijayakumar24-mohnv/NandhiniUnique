@@ -1,9 +1,28 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const Product = require("../models/Product");
 const { protect, adminOnly } = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
 const router = express.Router();
+
+function sanitizeProductImages(images = []) {
+  if (!Array.isArray(images)) return [];
+  return images.filter((img) => {
+    if (!img || typeof img !== "string") return false;
+    if (!img.startsWith("/uploads/")) return true;
+    const diskPath = path.join(__dirname, "..", img.replace(/^\/+/, ""));
+    return fs.existsSync(diskPath);
+  });
+}
+
+function withSanitizedImages(product) {
+  if (!product) return product;
+  const json = product.toObject ? product.toObject() : { ...product };
+  json.images = sanitizeProductImages(json.images);
+  return json;
+}
 
 // GET /api/products - public catalog with basic filtering + search
 router.get("/", async (req, res) => {
@@ -29,7 +48,7 @@ router.get("/", async (req, res) => {
     else query = query.sort({ createdAt: -1 });
 
     const products = await query;
-    res.json({ products });
+    res.json({ products: products.map(withSanitizedImages) });
   } catch (err) {
     res.status(500).json({ message: "Could not load products", error: err.message });
   }
@@ -49,7 +68,7 @@ router.get("/meta/categories", async (req, res) => {
 // GET /api/products/admin/all - includes inactive/sold-out items, admin only
 router.get("/admin/all", protect, adminOnly, async (req, res) => {
   const products = await Product.find().sort({ createdAt: -1 });
-  res.json({ products });
+  res.json({ products: products.map(withSanitizedImages) });
 });
 
 // GET /api/products/:id
@@ -57,7 +76,7 @@ router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: "Saree not found" });
-    res.json({ product });
+    res.json({ product: withSanitizedImages(product) });
   } catch (err) {
     res.status(404).json({ message: "Saree not found" });
   }
